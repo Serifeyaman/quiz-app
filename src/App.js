@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Question, Timer, ScoreTable } from "./components";
+import { Question, Timer, ScoreTable, Icons } from "./components";
 
 const App = () => {
   const [questions, setQuestions] = useState([]);
@@ -36,7 +36,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (quizStarted) {
+    if (quizStarted && answers.length !== 10) {
       startTimer();
     }
     return () => clearInterval(timerRef.current);
@@ -47,7 +47,6 @@ const App = () => {
       handleNextQuestion();
     }
   }, [timeLeft]);
-
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -63,8 +62,7 @@ const App = () => {
       ...prevAnswers,
       {
         question: questions[currentQuestion].title,
-        correctAnswer: questions[currentQuestion].correctAnswer,
-        userAnswer: selectedOption,
+        userAnswer: selectedOption.split(")")[0],
       },
     ]);
     setCurrentQuestion(currentQuestion + 1);
@@ -76,33 +74,75 @@ const App = () => {
   const startQuiz = () => {
     setQuizStarted(true);
   };
-console.log("answers", answers)
   if (!quizStarted) {
-    return <button onClick={startQuiz}>Start Quiz</button>;
+    return (
+      <div className="w-[100%] h-[100vh] video-container">
+        <video
+          autoPlay
+          loop
+          muted
+          poster="https://cdn.baykartech.com/media/upload/userFormUpload/2rWSCpimsF5N1bQlL9KuiTgUsRoivgvQ.png"
+        >
+          <source
+            src="https://cdn.baykartech.com/media/upload/userFormUpload/KV6Lelt99my8D4aR4yU1nvnyLT60HX71.mp4"
+            type="video/mp4"
+          ></source>
+        </video>
+        <div className="start main-div">
+          <button className="bg-transparent rounded-full shadow-xl hover:bg-white p-3">
+            <Icons.Play
+              className="w-32 h-32 text-[#142143]"
+              onClick={startQuiz}
+            />
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div>
-      {questions.length > 0 && currentQuestion < questions.length ? (
-        <>
-          <Timer time={timeLeft} />
-          <Question
-            questions={questions}
-            currentQuestion={currentQuestion}
-            selectedOption={selectedOption}
-            handleOptionSelect={handleOptionSelect}
-            disabled={timeLeft >= 20}
+    <div className="main-div">
+      <div className="bg-gray-50 px-10 py-5 pb-10 rounded-lg shadow-lg shadow-blue-950">
+        {questions.length > 0 && currentQuestion < questions.length ? (
+          <>
+            <div className="flex justify-between items-center space-x-4 w-[600px] mb-4">
+              <div className="">
+                <h2 className="capitalize text-lg font-bold text-gray-700">
+                  Question {currentQuestion + 1} / {questions.length}
+                </h2>
+                <p className="capitalize text-base font-semibold line-clamp-2 text-ellipsis text-gray-700">
+                  {questions[currentQuestion].title} ?
+                </p>
+              </div>
+              <Timer time={timeLeft} />
+            </div>
+            <Question
+              questions={questions}
+              currentQuestion={currentQuestion}
+              selectedOption={selectedOption}
+              handleOptionSelect={handleOptionSelect}
+              disabled={timeLeft > 19}
+            />
+            <div className="flex justify-end">
+              <span className="w-[100px] flex justify-center">
+                <button
+                  className="bg-transparent justify-center flex p-2 text-base font-medium hover:bg-[#142143] text-[#142143] hover:text-white border border-gray-700 hover:border-transparent rounded-full"
+                  onClick={handleNextQuestion}
+                  disabled={!isAnswered || timeLeft > 19}
+                >
+                  <Icons.RightArrow className="w-6 h-6" />
+                </button>
+              </span>
+            </div>
+          </>
+        ) : (
+          <ScoreTable
+            score={score}
+            questionCount={questions.length}
+            answers={answers}
           />
-          <button
-            onClick={handleNextQuestion}
-            disabled={!isAnswered || timeLeft > 20}
-          >
-            Next
-          </button>
-        </>
-      ) : (
-        <ScoreTable score={score} questionCount={questions.length} />
-      )}
+        )}
+      </div>
     </div>
   );
 };
