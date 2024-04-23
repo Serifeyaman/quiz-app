@@ -1,7 +1,7 @@
 
 # Quiz App
 
-React js kullanılarak oluşturulmuş süre kontrollü quiz uygulamasıdır.
+That is time controlled quiz application.
 
 
 ## Run Locally
