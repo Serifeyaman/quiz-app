@@ -2,12 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { Question, Timer, ScoreTable, Icons } from "./components";
 
 const App = () => {
+  const TIME_VALUE = 30;
+  const ANSWERABLE_TIME = 19;
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [isAnswered, setIsAnswered] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(TIME_VALUE);
   const [quizStarted, setQuizStarted] = useState(false);
   const [answers, setAnswers] = useState([]);
   const timerRef = useRef(null);
@@ -31,7 +33,6 @@ const App = () => {
       .then((data) => setQuestions(data.splice(0, 10)))
       .catch((error) => console.log(error));
 
-    // startTimer();
     return () => clearInterval(timerRef.current);
   }, []);
 
@@ -68,12 +69,13 @@ const App = () => {
     setCurrentQuestion(currentQuestion + 1);
     setSelectedOption("");
     setIsAnswered(false);
-    setTimeLeft(30);
+    setTimeLeft(TIME_VALUE);
   };
 
   const startQuiz = () => {
     setQuizStarted(true);
   };
+
   if (!quizStarted) {
     return (
       <div className="w-[100%] h-[100vh] video-container">
@@ -81,7 +83,6 @@ const App = () => {
           autoPlay
           loop
           muted
-          poster="https://cdn.baykartech.com/media/upload/userFormUpload/2rWSCpimsF5N1bQlL9KuiTgUsRoivgvQ.png"
         >
           <source
             src="https://cdn.baykartech.com/media/upload/userFormUpload/KV6Lelt99my8D4aR4yU1nvnyLT60HX71.mp4"
@@ -121,14 +122,14 @@ const App = () => {
               currentQuestion={currentQuestion}
               selectedOption={selectedOption}
               handleOptionSelect={handleOptionSelect}
-              disabled={timeLeft > 19}
+              disabled={timeLeft > ANSWERABLE_TIME}
             />
             <div className="flex justify-end">
               <span className="w-[100px] flex justify-center">
                 <button
                   className="bg-transparent justify-center flex p-2 text-base font-medium hover:bg-[#142143] text-[#142143] hover:text-white border border-gray-700 hover:border-transparent rounded-full"
                   onClick={handleNextQuestion}
-                  disabled={!isAnswered || timeLeft > 19}
+                  disabled={!isAnswered || timeLeft > ANSWERABLE_TIME}
                 >
                   <Icons.RightArrow className="w-6 h-6" />
                 </button>

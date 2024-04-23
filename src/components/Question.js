@@ -1,6 +1,6 @@
 import React from "react";
-import quizHandler from "../lib/quizHandler";
 import classNames from "classnames";
+import quizHandler from "../lib/quizHandler";
 
 const Question = ({
   currentQuestion,
@@ -9,17 +9,12 @@ const Question = ({
   handleOptionSelect,
   disabled,
 }) => {
-  // function handleQuestionOption(question) {
-  //   return questions[question].body.split("\n");
-  // }
-
   return (
     <div>
       <ul>
         {quizHandler
           .handleQuestionOption(currentQuestion, questions)
           .map((option, index) => (
-            // {handleQuestionOption(currentQuestion).map((option, index) => (
             <li key={index} className="space-y-5">
               <label
                 className={classNames(

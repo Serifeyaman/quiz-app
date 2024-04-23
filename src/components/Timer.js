@@ -8,7 +8,8 @@ import "react-circular-progressbar/dist/styles.css";
 const Timer = ({ time }) => {
   const MAX_VALUE = 19;
   const MIN_VALUE = 9;
-  const value = Math.round((100 / 30) * time);
+  const TIME = 30;
+  const value = Math.round((100 / TIME) * time);
 
   const getProgressColor = (progressValue) => {
     if (progressValue > MAX_VALUE) {

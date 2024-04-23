@@ -9,15 +9,13 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  background-image: url("https://cdn.baykartech.com/static/assets/img/parts/iha-center-shape.png");
   background-color: #142143;
-  /* background-image: url(assets/images/background.png); */
+  background-image: url(assets/images/shapes.png);
   top: 0;
   left: 0;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 100% 100%;
+  background-size: auto;
   overflow: hidden;
 }
 
